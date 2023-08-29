@@ -1,4 +1,4 @@
-int calculateIMC(double weight, double height) {
-  return (weight / (height * 2)).floor();
+double calculateIMC(double weight, double height) {
+  var result = weight / (height * height);
+  return double.parse(result.toStringAsFixed(1));
 }
-

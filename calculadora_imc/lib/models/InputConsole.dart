@@ -1,28 +1,46 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js_util';
 
 class InputConsole {
+  String inputString() {
+    while (true) {
+      try {
+        var input = stdin.readLineSync(encoding: utf8);
 
-  String InputString() {    
-    var input = stdin.readLineSync(encoding: utf8);
-    return input ?? "";
-  }
-  
-  double InputNumeric() {
-    try {
-      var input = stdin.readLineSync(encoding: utf8);
+        if (input != null && input.isNotEmpty) {
+          return input;
+        }
 
-      if (input != null) { 
-        return double.parse(input);        
+        throw StdinException("Nada foi digitado!");
+      } catch (e) {
+        print("\n -- Error --");        
+        print("º $e");        
+        print("\n - Digite Novamente -");
       }
-      
-      throw StdinException("Nada foi digitado");      
-    } catch (e) {
-      print(e.hashCode);
-      print("Apenas numeros são permitidos");
     }
-
-    return 0;
   }
 
+  double inputNumeric() {
+    while (true) {
+      try {
+        var input = stdin.readLineSync(encoding: utf8);
+
+        if (input != null && input.isNotEmpty) {
+          return double.parse(input);
+        }
+
+        throw StdinException("Nada foi digitado");
+      } catch (e) {
+        print("\n -- Error --");
+
+        if (e.runtimeType == FormatException) {
+          print("º Apenas números são permitidos");
+        } else {
+          print("º $e");
+        }
+        print("\n - Digite Novamente -");
+      }
+    }
+  }
 }
